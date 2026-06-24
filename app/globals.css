@@ -1,209 +1,104 @@
 @import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
-/* DocSumm Design System */
-/* Fonts: Space Grotesk (headings) + Inter (body) */
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700&family=Inter:wght@400;500;600&display=swap');
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 97%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 97%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 0 0% 97%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 91%;
+    --input: 0 0% 91%;
+    --ring: 0 0% 9%;
+    --radius: 0.625rem;
 
-@custom-variant dark (&:is(.dark *));
+    /* DocSumm custom tokens */
+    --ds-bg: #FFFFFF;
+    --ds-bg-2: #F7F7F8;
+    --ds-bg-3: #EFEFEF;
+    --ds-card: #FFFFFF;
+    --ds-border: #E8E8EA;
+    --ds-border-2: #D4D4D8;
+    --ds-text-1: #111111;
+    --ds-text-2: #666666;
+    --ds-text-3: #A0A0A5;
+    --ds-accent: #1B7A47;
+    --ds-accent-bg: #EAF5EF;
+    --ds-accent-bd: #B8DEC9;
+    --ds-danger: #C0392B;
+    --ds-danger-bg: #FEF0EF;
+    --ds-warn: #8A6200;
+    --ds-warn-bg: #FEF8EC;
+    --ds-r: 10px;
+    --ds-r-lg: 16px;
+    --ds-r-xl: 22px;
+  }
 
-/* Design Tokens */
-:root {
-  /* Light Mode Colors */
-  --bg: #FFFFFF;
-  --bg-2: #F7F7F8;
-  --bg-3: #EFEFEF;
-  --border: #E8E8EA;
-  --border-2: #D4D4D8;
-  --text-1: #111111;
-  --text-2: #666666;
-  --text-3: #A0A0A5;
-  --accent: #1B7A47;
-  --accent-bg: #EAF5EF;
-  --accent-bd: #B8DEC9;
-  --danger: #C0392B;
-  --danger-bg: #FEF0EF;
-  --warn: #8A6200;
-  --warn-bg: #FEF8EC;
+  [data-theme="dark"] {
+    --background: 0 0% 6%;
+    --foreground: 0 0% 94%;
+    --card: 0 0% 10%;
+    --card-foreground: 0 0% 94%;
+    --popover: 0 0% 10%;
+    --popover-foreground: 0 0% 94%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 53%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62% 55%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 17%;
+    --input: 0 0% 17%;
+    --ring: 0 0% 83%;
 
-  /* Radius */
-  --r: 10px;
-  --r-lg: 16px;
-  --r-xl: 22px;
-  --r-pill: 999px;
-
-  /* Typography */
-  --font-display: 'Space Grotesk', sans-serif;
-  --font-body: 'Inter', sans-serif;
-
-  /* shadcn compatibility */
-  --background: var(--bg);
-  --foreground: var(--text-1);
-  --card: var(--bg-2);
-  --card-foreground: var(--text-1);
-  --popover: var(--bg);
-  --popover-foreground: var(--text-1);
-  --primary: var(--accent);
-  --primary-foreground: #FFFFFF;
-  --secondary: var(--bg-2);
-  --secondary-foreground: var(--text-1);
-  --muted: var(--bg-3);
-  --muted-foreground: var(--text-2);
-  --accent-compat: var(--accent-bg);
-  --accent-foreground: var(--accent);
-  --destructive: var(--danger);
-  --destructive-foreground: #FFFFFF;
-  --input: var(--border);
-  --ring: var(--accent);
-  --radius: var(--r);
-}
-
-[data-theme="dark"] {
-  /* Dark Mode Colors */
-  --bg: #101012;
-  --bg-2: #18181B;
-  --bg-3: #222226;
-  --border: #2C2C30;
-  --border-2: #3C3C42;
-  --text-1: #F0F0F2;
-  --text-2: #888892;
-  --text-3: #505058;
-  --accent: #2ECC71;
-  --accent-bg: #0C2218;
-  --accent-bd: #174D2E;
-  --danger: #E87070;
-  --danger-bg: #220E0E;
-  --warn: #F5C542;
-  --warn-bg: #1E1800;
-
-  /* shadcn compatibility */
-  --background: var(--bg);
-  --foreground: var(--text-1);
-  --card: var(--bg-2);
-  --card-foreground: var(--text-1);
-  --popover: var(--bg);
-  --popover-foreground: var(--text-1);
-  --primary: var(--accent);
-  --primary-foreground: var(--bg);
-  --secondary: var(--bg-2);
-  --secondary-foreground: var(--text-1);
-  --muted: var(--bg-3);
-  --muted-foreground: var(--text-2);
-  --accent-compat: var(--accent-bg);
-  --accent-foreground: var(--accent);
-  --destructive: var(--danger);
-  --destructive-foreground: var(--bg);
-  --input: var(--border);
-  --ring: var(--accent);
-}
-
-.dark {
-  /* Support for .dark class (shadcn default) */
-  --bg: #101012;
-  --bg-2: #18181B;
-  --bg-3: #222226;
-  --border: #2C2C30;
-  --border-2: #3C3C42;
-  --text-1: #F0F0F2;
-  --text-2: #888892;
-  --text-3: #505058;
-  --accent: #2ECC71;
-  --accent-bg: #0C2218;
-  --accent-bd: #174D2E;
-  --danger: #E87070;
-  --danger-bg: #220E0E;
-  --warn: #F5C542;
-  --warn-bg: #1E1800;
+    /* DocSumm dark tokens */
+    --ds-bg: #101012;
+    --ds-bg-2: #18181B;
+    --ds-bg-3: #222226;
+    --ds-card: #18181B;
+    --ds-border: #2C2C30;
+    --ds-border-2: #3C3C42;
+    --ds-text-1: #F0F0F2;
+    --ds-text-2: #888892;
+    --ds-text-3: #505058;
+    --ds-accent: #2ECC71;
+    --ds-accent-bg: #0C2218;
+    --ds-accent-bd: #174D2E;
+    --ds-danger: #E87070;
+    --ds-danger-bg: #220E0E;
+    --ds-warn: #F5C542;
+    --ds-warn-bg: #1E1800;
+  }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    box-sizing: border-box;
   }
-  
-  html {
-    font-family: var(--font-body);
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-  }
-  
   body {
-    background-color: var(--bg);
-    color: var(--text-1);
-    min-height: 100vh;
+    background-color: var(--ds-bg);
+    color: var(--ds-text-1);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    -webkit-tap-highlight-color: transparent;
   }
-
-  /* Typography Scale */
-  h1, h2 {
-    font-family: var(--font-display);
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
     font-weight: 700;
-  }
-
-  h1 {
-    font-size: 28px;
-    line-height: 1.2;
-  }
-
-  h2 {
-    font-size: 20px;
-    line-height: 1.3;
-  }
-
-  h3 {
-    font-family: var(--font-body);
-    font-size: 16px;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-
-  /* Mobile input zoom prevention */
-  input, textarea, select {
-    font-size: 16px;
-  }
-
-  @media (min-width: 580px) {
-    input, textarea, select {
-      font-size: 14px;
-    }
-  }
-}
-
-@layer utilities {
-  /* Typography utilities */
-  .text-hero {
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(30px, 7vw, 46px);
-    line-height: 1.1;
-  }
-
-  .text-eyebrow {
-    font-family: var(--font-body);
-    font-size: 10px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
-
-  /* Animation utilities */
-  .fade-up {
-    animation: fadeUp 220ms ease;
-  }
-
-  @keyframes fadeUp {
-    from {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Mobile safe area */
-  .safe-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
   }
 }

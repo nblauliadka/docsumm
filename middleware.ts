@@ -1,66 +1,27 @@
-// Auth route protection middleware
-import { createServerClient } from '@supabase/ssr'
-import { NextResponse, type NextRequest } from 'next/server'
+import { NextResponse } from 'next/server'
+import type { NextRequest } from 'next/server'
 
-export async function middleware(request: NextRequest) {
-  let supabaseResponse = NextResponse.next({
-    request,
-  })
+export function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl
 
-  const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
-    {
-      cookies: {
-        getAll() {
-          return request.cookies.getAll()
-        },
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value, options }) => request.cookies.set(name, value))
-          supabaseResponse = NextResponse.next({
-            request,
-          })
-          cookiesToSet.forEach(({ name, value, options }) =>
-            supabaseResponse.cookies.set(name, value, options)
-          )
-        },
-      },
-    }
-  )
+  const isAppRoute = pathname.startsWith('/app')
+  const isAuthRoute = pathname.startsWith('/auth')
 
-  // Refresh session if expired - required for Server Components
-  const { data: { user } } = await supabase.auth.getUser()
+  const token =
+    request.cookies.get('sb-access-token') ||
+    request.cookies.get('sb-refresh-token')
 
-  const path = request.nextUrl.pathname
-
-  // Protect all /app/* routes
-  if (path.startsWith('/app')) {
-    if (!user) {
-      const url = request.nextUrl.clone()
-      url.pathname = '/auth/login'
-      return NextResponse.redirect(url)
-    }
+  if (isAppRoute && !token) {
+    return NextResponse.redirect(new URL('/auth/login', request.url))
   }
 
-  // Redirect authenticated users away from auth pages
-  if (path.startsWith('/auth') && user) {
-    const url = request.nextUrl.clone()
-    url.pathname = '/app/dashboard'
-    return NextResponse.redirect(url)
+  if (isAuthRoute && token) {
+    return NextResponse.redirect(new URL('/app/dashboard', request.url))
   }
 
-  return supabaseResponse
+  return NextResponse.next()
 }
 
 export const config = {
-  matcher: [
-    /*
-     * Match all request paths except:
-     * - _next/static (static files)
-     * - _next/image (image optimization files)
-     * - favicon.ico (favicon file)
-     * - public files (public folder)
-     */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
-  ],
+  matcher: ['/app/:path*', '/auth/:path*'],
 }
